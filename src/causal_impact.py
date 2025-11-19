@@ -215,6 +215,11 @@ def fit_structural_time_series(
     fitted_pre = result.fittedvalues
     forecast_mean = forecast.predicted_mean
 
+    # Align indices properly
+    post_years = df_treated.index[df_treated.index >= treatment_year]
+    forecast_mean = pd.Series(forecast_mean.values[:len(post_years)], index=post_years)
+    fitted_pre = pd.Series(fitted_pre.values, index=pre_treatment.index)
+
     predicted = pd.concat([fitted_pre, forecast_mean])
 
     # Confidence intervals
