@@ -3,18 +3,17 @@ Bayesian Structural Time Series (CausalImpact) for Chilean Growth Slowdown.
 Based on Brodersen et al. (2015).
 """
 
-import numpy as np
-import pandas as pd
-from scipy import stats
-import statsmodels.api as sm
 from typing import NamedTuple
 
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+from scipy import stats
+
 from .config import (
-    TREATMENT_YEAR,
-    PRE_TREATMENT_START,
-    POST_TREATMENT_END,
-    TREATED_COUNTRY,
     MCMC_SAMPLES,
+    TREATED_COUNTRY,
+    TREATMENT_YEAR,
 )
 
 
@@ -60,7 +59,28 @@ def fit_bsts_model(
 
     Returns:
         BSTSResult with predictions and effects
+
+    Raises:
+        ValueError: If inputs are invalid
     """
+    # Input validation
+    if not isinstance(df, pd.DataFrame):
+        raise ValueError("df must be a pandas DataFrame")
+
+    required_cols = ["country", "year"]
+    missing_cols = [c for c in required_cols if c not in df.columns]
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {missing_cols}")
+
+    if outcome_var not in df.columns:
+        raise ValueError(f"Outcome variable '{outcome_var}' not in DataFrame")
+
+    if treated_unit not in df["country"].unique():
+        raise ValueError(f"Treated unit '{treated_unit}' not in data")
+
+    if not 0 < confidence < 1:
+        raise ValueError("Confidence must be between 0 and 1")
+
     # Prepare data
     df_treated = df[df["country"] == treated_unit].set_index("year")[outcome_var]
     df_control = df[df["country"] != treated_unit]

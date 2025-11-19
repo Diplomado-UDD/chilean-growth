@@ -149,7 +149,35 @@ def fit_synthetic_control(
 
     Returns:
         SCMResult with weights, synthetic series, and diagnostics
+
+    Raises:
+        ValueError: If inputs are invalid
     """
+    # Input validation
+    if not isinstance(df, pd.DataFrame):
+        raise ValueError("df must be a pandas DataFrame")
+
+    required_cols = ["country", "year"]
+    missing_cols = [c for c in required_cols if c not in df.columns]
+    if missing_cols:
+        raise ValueError(f"Missing required columns: {missing_cols}")
+
+    if outcome_var not in df.columns:
+        raise ValueError(f"Outcome variable '{outcome_var}' not in DataFrame")
+
+    countries = df["country"].unique()
+    if treated_unit not in countries:
+        raise ValueError(f"Treated unit '{treated_unit}' not in data")
+
+    years = df["year"].unique()
+    if treatment_year not in years:
+        raise ValueError(f"Treatment year {treatment_year} not in data")
+
+    if donor_pool is not None:
+        missing_donors = [c for c in donor_pool if c not in countries]
+        if missing_donors:
+            raise ValueError(f"Donor countries not in data: {missing_donors}")
+
     if predictor_vars is None:
         predictor_vars = [
             "population_growth",
