@@ -3,19 +3,22 @@ Synthetic Control Method implementation for Chilean Growth Slowdown replication.
 Based on Abadie, Diamond & Hainmueller (2010, 2015) and Abadie (2021).
 """
 
-import numpy as np
-import pandas as pd
-import cvxpy as cp
-from scipy.optimize import minimize
 from typing import NamedTuple
 
+import cvxpy as cp
+import numpy as np
+import pandas as pd
+from scipy.optimize import minimize
+from tqdm import tqdm
+
+from .logger import logger
+
 from .config import (
-    TREATMENT_YEAR,
-    PRE_TREATMENT_START,
-    PRE_TREATMENT_END,
-    POST_TREATMENT_END,
-    TREATED_COUNTRY,
     COUNTRY_NAMES,
+    POST_TREATMENT_END,
+    PRE_TREATMENT_START,
+    TREATED_COUNTRY,
+    TREATMENT_YEAR,
 )
 
 
@@ -354,7 +357,7 @@ def placebo_test(
         donor_pool = df[df["country"] != treated_unit]["country"].unique()
 
     # Run for each placebo unit
-    for placebo_unit in donor_pool:
+    for placebo_unit in tqdm(donor_pool, desc="Placebo tests"):
         try:
             # Create new donor pool excluding placebo unit
             new_donors = [c for c in donor_pool if c != placebo_unit]
@@ -369,10 +372,9 @@ def placebo_test(
             )
 
             results[placebo_unit] = result
-            print(f"Completed placebo for {COUNTRY_NAMES.get(placebo_unit, placebo_unit)}")
 
         except Exception as e:
-            print(f"Failed placebo for {placebo_unit}: {e}")
+            logger.warning(f"Failed placebo for {placebo_unit}: {e}")
 
     return results
 
@@ -482,7 +484,7 @@ def jackknife_test(
         donor_pool = list(df[df["country"] != treated_unit]["country"].unique())
 
     # Run for each leave-out
-    for drop_country in positive_weight_countries:
+    for drop_country in tqdm(positive_weight_countries, desc="Jackknife tests"):
         try:
             new_donors = [c for c in donor_pool if c != drop_country]
 
@@ -496,10 +498,9 @@ def jackknife_test(
             )
 
             results[f"w/o_{drop_country}"] = result
-            print(f"Completed jackknife w/o {COUNTRY_NAMES.get(drop_country, drop_country)}")
 
         except Exception as e:
-            print(f"Failed jackknife w/o {drop_country}: {e}")
+            logger.warning(f"Failed jackknife w/o {drop_country}: {e}")
 
     return results
 
