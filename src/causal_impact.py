@@ -345,6 +345,77 @@ Statistical significance:
     return summary
 
 
+def fit_causal_impact(
+    df: pd.DataFrame,
+    outcome_var: str = "gdp_per_capita",
+    treated_unit: str = TREATED_COUNTRY,
+    treatment_year: int = TREATMENT_YEAR,
+    control_vars: list[str] | None = None,
+) -> dict:
+    """
+    Fit CausalImpact model using pycausalimpact library.
+
+    This provides a more robust BSTS implementation based on Google's
+    original CausalImpact R package.
+
+    Args:
+        df: Panel data
+        outcome_var: Name of outcome variable
+        treated_unit: ISO3 code of treated country
+        treatment_year: Year of treatment
+        control_vars: List of control country codes (if None, use all)
+
+    Returns:
+        Dictionary with CausalImpact results including:
+        - ci: CausalImpact object
+        - summary: Text summary
+        - report: Detailed report
+    """
+    from causalimpact import CausalImpact
+
+    # Prepare data
+    df_treated = df[df["country"] == treated_unit].set_index("year")[outcome_var]
+    df_control = df[df["country"] != treated_unit]
+
+    # Get control variables
+    if control_vars is None:
+        control_vars = df_control["country"].unique().tolist()
+
+    # Create wide-format DataFrame
+    Y_control = (
+        df_control
+        .pivot(index="year", columns="country", values=outcome_var)
+        .reindex(columns=control_vars)
+    )
+
+    # Combine treated and control
+    data = pd.DataFrame({"y": df_treated})
+    for col in Y_control.columns:
+        data[col] = Y_control[col]
+
+    # Handle missing values
+    data = data.ffill().bfill()
+
+    # Define pre and post periods
+    pre_period = [data.index.min(), treatment_year - 1]
+    post_period = [treatment_year, data.index.max()]
+
+    # Fit CausalImpact model
+    ci = CausalImpact(
+        data,
+        pre_period,
+        post_period,
+        prior_level_sd=None,  # Let statsmodels optimize
+    )
+
+    return {
+        "ci": ci,
+        "summary": ci.summary(),
+        "report": ci.summary(output="report"),
+        "inferences": ci.inferences,
+    }
+
+
 if __name__ == "__main__":
     from .data_loader import assemble_panel_data
 
