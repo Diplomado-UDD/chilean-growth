@@ -3,21 +3,18 @@ Visualization functions for Chilean Growth Slowdown replication.
 Reproduces figures from Toni, Paniagua & Ordenes (2023).
 """
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
-from scipy.signal import filtfilt, butter
 
+from .causal_impact import BSTSResult
 from .config import (
-    TREATMENT_YEAR,
-    PRE_TREATMENT_START,
-    POST_TREATMENT_END,
     COUNTRY_NAMES,
     HP_LAMBDA,
+    TREATMENT_YEAR,
 )
 from .synthetic_control import SCMResult
-from .causal_impact import BSTSResult
 
 
 def setup_style():

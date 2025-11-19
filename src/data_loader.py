@@ -3,18 +3,18 @@ Data loading utilities for Chilean Growth Slowdown replication.
 Fetches data from World Bank API and other sources.
 """
 
-import pandas as pd
-import numpy as np
-import wbgapi as wb
 from pathlib import Path
 
+import pandas as pd
+import wbgapi as wb
+
 from .config import (
-    WB_INDICATORS,
-    DONOR_POOL_GROUP_II,
-    TREATED_COUNTRY,
-    PRE_TREATMENT_START,
-    POST_TREATMENT_END,
     COUNTRY_NAMES,
+    DONOR_POOL_GROUP_II,
+    POST_TREATMENT_END,
+    PRE_TREATMENT_START,
+    TREATED_COUNTRY,
+    WB_INDICATORS,
 )
 
 
