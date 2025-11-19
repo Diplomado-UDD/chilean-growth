@@ -5,15 +5,15 @@ description = "Replication code for Toni, Paniagua & Ordenes (2023) - Policy Cha
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "cvxpy>=1.7.3",
-    "matplotlib>=3.10.7",
-    "numpy>=2.3.5",
-    "pandas>=2.3.3",
-    "scikit-learn>=1.7.2",
-    "scipy>=1.16.3",
-    "statsmodels>=0.14.5",
-    "tqdm>=4.66.0",
-    "wbgapi>=1.0.12",
+    "cvxpy==1.7.3",
+    "matplotlib==3.10.7",
+    "numpy==2.3.5",
+    "pandas==2.3.3",
+    "scikit-learn==1.7.2",
+    "scipy==1.16.3",
+    "statsmodels==0.14.5",
+    "tqdm==4.67.1",
+    "wbgapi==1.0.12",
 ]
 
 [project.optional-dependencies]
