@@ -1,7 +1,7 @@
 [project]
 name = "chilean-growth-scm"
 version = "0.1.0"
-description = "Add your description here"
+description = "Replication code for Toni, Paniagua & Ordenes (2023) - Policy Changes and Growth Slowdown in Chile using Synthetic Control and BSTS"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
