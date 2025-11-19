@@ -52,7 +52,15 @@ def create_directories():
 
 
 def load_or_fetch_data(force_refresh: bool = False) -> pd.DataFrame:
-    """Load data from cache or fetch from sources."""
+    """
+    Load data from cache or fetch from sources.
+
+    Args:
+        force_refresh: If True, fetch fresh data even if cache exists
+
+    Returns:
+        Panel data with all countries and variables
+    """
     data_path = Path("data/panel_data.csv")
 
     if data_path.exists() and not force_refresh:
@@ -68,7 +76,11 @@ def run_main_analysis(df: pd.DataFrame) -> dict:
     """
     Run main SCM analysis.
 
-    Returns dictionary with all results.
+    Args:
+        df: Panel data with countries and years
+
+    Returns:
+        Dictionary with SCM results keyed by 'main'
     """
     logger.info("\n" + "=" * 60)
     logger.info("SYNTHETIC CONTROL METHOD ANALYSIS")
@@ -136,7 +148,16 @@ def run_main_analysis(df: pd.DataFrame) -> dict:
 
 
 def run_robustness_tests(df: pd.DataFrame, main_result) -> dict:
-    """Run robustness tests."""
+    """
+    Run robustness tests.
+
+    Args:
+        df: Panel data with countries and years
+        main_result: SCMResult from main analysis
+
+    Returns:
+        Dictionary with placebo, p-values, and jackknife results
+    """
     results = {}
 
     logger.info("\n" + "=" * 60)
@@ -180,7 +201,15 @@ def run_robustness_tests(df: pd.DataFrame, main_result) -> dict:
 
 
 def run_bsts_analysis(df: pd.DataFrame) -> dict:
-    """Run Bayesian Structural Time Series analysis."""
+    """
+    Run Bayesian Structural Time Series analysis.
+
+    Args:
+        df: Panel data with countries and years
+
+    Returns:
+        Dictionary with BSTS results keyed by 'bsts'
+    """
     logger.info("\n" + "=" * 60)
     logger.info("BAYESIAN STRUCTURAL TIME SERIES (CAUSALIMPACT)")
     logger.info("=" * 60)
@@ -198,7 +227,12 @@ def run_bsts_analysis(df: pd.DataFrame) -> dict:
 
 
 def generate_figures(results: dict):
-    """Generate all figures."""
+    """
+    Generate all figures.
+
+    Args:
+        results: Dictionary containing SCM, robustness, and BSTS results
+    """
     logger.info("\n" + "=" * 60)
     logger.info("GENERATING FIGURES")
     logger.info("=" * 60)
@@ -252,7 +286,12 @@ def generate_figures(results: dict):
 
 
 def save_results(results: dict):
-    """Save numerical results to CSV."""
+    """
+    Save numerical results to CSV.
+
+    Args:
+        results: Dictionary containing SCM and BSTS results
+    """
     main_result = results.get("main")
 
     if main_result:
