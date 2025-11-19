@@ -119,3 +119,6 @@ HP_LAMBDA = 100
 
 # MCMC simulations for Bayesian estimation
 MCMC_SAMPLES = 10000
+
+# Random seed for reproducibility
+RANDOM_SEED = 42

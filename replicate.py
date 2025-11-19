@@ -21,6 +21,7 @@ from src.config import (
     TREATMENT_YEAR,
     TREATED_COUNTRY,
     COUNTRY_NAMES,
+    RANDOM_SEED,
 )
 from src.data_loader import assemble_panel_data
 from src.synthetic_control import (
@@ -299,6 +300,10 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # Set random seed for reproducibility
+    np.random.seed(RANDOM_SEED)
+    logger.info(f"Random seed set to {RANDOM_SEED}")
 
     # Setup
     create_directories()

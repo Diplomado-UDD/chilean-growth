@@ -12,6 +12,7 @@ from scipy import stats
 
 from .config import (
     MCMC_SAMPLES,
+    RANDOM_SEED,
     TREATED_COUNTRY,
     TREATMENT_YEAR,
 )
@@ -131,7 +132,7 @@ def fit_bsts_model(
     sigma = residuals_pre.std()
 
     # Generate posterior samples
-    np.random.seed(42)
+    np.random.seed(RANDOM_SEED)
     prediction_samples = np.zeros((n_samples, len(Y_treated)))
 
     for i in range(n_samples):
