@@ -60,7 +60,7 @@ Requires Python 3.12+. Uses `uv` for package management.
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/Diplomado-UDD/chilean-growth.git
 cd chilean-growth
 
 # Install dependencies
