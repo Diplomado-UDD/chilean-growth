@@ -13,7 +13,13 @@ Usage:
     uv run main.py --refresh-data   # Force refresh data from sources
 """
 
-from replicate import main as run_analysis
+import sys
+from pathlib import Path
+
+# Add project root to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from scripts.replicate import main as run_analysis
 
 
 def main():

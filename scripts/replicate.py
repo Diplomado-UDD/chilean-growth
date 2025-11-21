@@ -15,24 +15,24 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-from src.logger import logger
-from src.config import (
+from chilean_growth.logger import logger
+from chilean_growth.config import (
     DONOR_POOL_GROUP_II,
     TREATMENT_YEAR,
     TREATED_COUNTRY,
     COUNTRY_NAMES,
     RANDOM_SEED,
 )
-from src.data_loader import assemble_panel_data
-from src.synthetic_control import (
+from chilean_growth.data_loader import assemble_panel_data
+from chilean_growth.synthetic_control import (
     fit_synthetic_control,
     placebo_test,
     jackknife_test,
     in_time_placebo,
     compute_p_values,
 )
-from src.causal_impact import fit_bsts_model, summarize_impact
-from src.visualization import (
+from chilean_growth.causal_impact import fit_bsts_model, summarize_impact
+from chilean_growth.visualization import (
     plot_scm_main,
     plot_scm_trend,
     plot_decomposition,
@@ -46,8 +46,9 @@ from src.visualization import (
 
 def create_directories():
     """Create output directories."""
-    Path("data").mkdir(exist_ok=True)
-    Path("figures").mkdir(exist_ok=True)
+    Path("data/raw").mkdir(parents=True, exist_ok=True)
+    Path("data/processed").mkdir(parents=True, exist_ok=True)
+    Path("reports/figures").mkdir(parents=True, exist_ok=True)
     Path("results").mkdir(exist_ok=True)
 
 
@@ -61,7 +62,7 @@ def load_or_fetch_data(force_refresh: bool = False) -> pd.DataFrame:
     Returns:
         Panel data with all countries and variables
     """
-    data_path = Path("data/panel_data.csv")
+    data_path = Path("data/raw/panel_data.csv")
 
     if data_path.exists() and not force_refresh:
         logger.info(f"Loading cached data from {data_path}")
@@ -242,25 +243,25 @@ def generate_figures(results: dict):
     if main_result:
         # Figure 8 (left): Main SCM result
         logger.info("  Figure 8 (left): Main SCM result...")
-        plot_scm_main(main_result, save_path="figures/fig8_left_scm_main.png")
+        plot_scm_main(main_result, save_path="reports/figures/fig8_left_scm_main.png")
 
         # Figure 8 (right): HP filtered trends
         logger.info("  Figure 8 (right): HP filtered trends...")
-        plot_scm_trend(main_result, save_path="figures/fig8_right_scm_trend.png")
+        plot_scm_trend(main_result, save_path="reports/figures/fig8_right_scm_trend.png")
 
         # Figure 9: Decomposition
         logger.info("  Figure 9: Decomposition...")
-        plot_decomposition(main_result, save_path="figures/fig9_decomposition.png")
+        plot_decomposition(main_result, save_path="reports/figures/fig9_decomposition.png")
 
         # Figure 13: Growth rates
         logger.info("  Figure 13: Growth rates...")
-        plot_growth_rates(main_result, save_path="figures/fig13_growth_rates.png")
+        plot_growth_rates(main_result, save_path="reports/figures/fig13_growth_rates.png")
 
     # Robustness figures
     placebo_results = results.get("placebo_countries")
     if placebo_results:
         logger.info("  Figure B: Country placebos...")
-        plot_placebo_test(placebo_results, save_path="figures/figB_placebos.png")
+        plot_placebo_test(placebo_results, save_path="reports/figures/figB_placebos.png")
 
     p_values = results.get("p_values")
     if p_values is not None and main_result:
@@ -268,19 +269,19 @@ def generate_figures(results: dict):
         plot_p_values(
             p_values,
             main_result.gap,
-            save_path="figures/figC_pvalues.png",
+            save_path="reports/figures/figC_pvalues.png",
         )
 
     jackknife_results = results.get("jackknife")
     if jackknife_results:
         logger.info("  Figure D: Jackknife...")
-        plot_jackknife(jackknife_results, save_path="figures/figD_jackknife.png")
+        plot_jackknife(jackknife_results, save_path="reports/figures/figD_jackknife.png")
 
     # BSTS figure
     bsts_result = results.get("bsts")
     if bsts_result:
         logger.info("  Figure 12: BSTS result...")
-        plot_bsts_result(bsts_result, save_path="figures/fig12_bsts.png")
+        plot_bsts_result(bsts_result, save_path="reports/figures/fig12_bsts.png")
 
     logger.info("\nFigures saved to figures/")
 

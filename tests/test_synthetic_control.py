@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.synthetic_control import (
+from chilean_growth.synthetic_control import (
     solve_weights,
     compute_rmspe,
     fit_synthetic_control,

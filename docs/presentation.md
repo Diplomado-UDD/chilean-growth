@@ -144,7 +144,7 @@ GDP lags included: 1990, 1995, 2000, 2005, 2010, 2013
 
 # SCM Results: Main Finding
 
-![w:750 h:420 center](figures/fig8_left_scm_main.png)
+![w:750 h:420 center](../reports/figures/fig8_left_scm_main.png)
 
 **By 2019:** Actual Chile $13,761 vs Synthetic Chile $15,106 = **$1,345 gap (~10%)**
 
@@ -152,7 +152,7 @@ GDP lags included: 1990, 1995, 2000, 2005, 2010, 2013
 
 # Long-Run Trend Analysis (HP Filter)
 
-![w:750 h:420 center](figures/fig8_right_scm_trend.png)
+![w:750 h:420 center](../reports/figures/fig8_right_scm_trend.png)
 
 Sharp divergence in long-run growth trend after 2014 treatment
 
@@ -160,7 +160,7 @@ Sharp divergence in long-run growth trend after 2014 treatment
 
 # Decomposition: Internal vs External Factors
 
-![w:750 h:420 center](figures/fig9_decomposition.png)
+![w:750 h:420 center](../reports/figures/fig9_decomposition.png)
 
 **Result:** ~2/3 internal factors, ~1/3 external factors
 
@@ -168,7 +168,7 @@ Sharp divergence in long-run growth trend after 2014 treatment
 
 # Bayesian Structural Time Series (BSTS)
 
-![w:750 h:420 center](figures/fig12_bsts.png)
+![w:750 h:420 center](../reports/figures/fig12_bsts.png)
 
 95% confidence intervals from 10,000 MCMC simulations confirm SCM results
 
@@ -176,7 +176,7 @@ Sharp divergence in long-run growth trend after 2014 treatment
 
 # Growth Rate Impact
 
-![w:750 h:420 center](figures/fig13_growth_rates.png)
+![w:750 h:420 center](../reports/figures/fig13_growth_rates.png)
 
 **Average Growth 2015-2019:** Actual 2.0% vs Synthetic 3.8% = **1.8% gap**
 
@@ -184,7 +184,7 @@ Sharp divergence in long-run growth trend after 2014 treatment
 
 # Robustness: Country Placebo Tests
 
-![w:750 h:420 center](figures/figB_placebos.png)
+![w:750 h:420 center](../reports/figures/figB_placebos.png)
 
 Chile shows largest divergence among all donor countries post-2014
 
@@ -192,7 +192,7 @@ Chile shows largest divergence among all donor countries post-2014
 
 # Statistical Significance
 
-![w:750 h:420 center](figures/figC_pvalues.png)
+![w:750 h:420 center](../reports/figures/figC_pvalues.png)
 
 Results significant at 90% confidence interval for final post-treatment years
 
@@ -200,7 +200,7 @@ Results significant at 90% confidence interval for final post-treatment years
 
 # Robustness: Jackknife Tests
 
-![w:750 h:420 center](figures/figD_jackknife.png)
+![w:750 h:420 center](../reports/figures/figD_jackknife.png)
 
 Results robust to leave-one-out permutation tests
 

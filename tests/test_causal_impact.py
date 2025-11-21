@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.causal_impact import (
+from chilean_growth.causal_impact import (
     fit_bsts_model,
     fit_structural_time_series,
     summarize_impact,
